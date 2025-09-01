@@ -1,36 +1,87 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# To-Do List Application
+
+This is a simple to-do list application built with Next.js and Firebase. It allows users to create, manage, and track their to-do items. The application uses Firebase for authentication and database services.
+
+## Features
+
+*   User authentication with Google
+*   Create, read, update, and delete to-do items
+*   Real-time data synchronization with Firestore
+*   Responsive design for use on different devices
 
 ## Getting Started
 
-First, run the development server:
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Prerequisites
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+*   [Node.js](https://nodejs.org/)
+*   [npm](https://www.npmjs.com/)
+*   A Google account for Firebase authentication
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Installation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1.  Clone the repository:
 
-## Learn More
+    ```bash
+    git clone https://github.com/your-username/your-repository.git
+    ```
 
-To learn more about Next.js, take a look at the following resources:
+2.  Install the dependencies:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+    ```bash
+    npm install
+    ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Configuration
 
-## Deploy on Vercel
+1.  Create a Firebase project in the [Firebase console](https://console.firebase.google.com/).
+2.  Enable Google as a sign-in provider in the Authentication section of your Firebase project.
+3.  Create a Firestore database in your Firebase project.
+4.  Create a `.env.local` file in the root of the project and add your Firebase project configuration:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```
+    NEXT_PUBLIC_FIREBASE_API_KEY="YOUR_API_KEY"
+    NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN="YOUR_AUTH_DOMAIN"
+    NEXT_PUBLIC_FIREBASE_PROJECT_ID="YOUR_PROJECT_ID"
+    NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET="YOUR_STORAGE_BUCKET"
+    NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID="YOUR_MESSAGING_SENDER_ID"
+    NEXT_PUBLIC_FIREBASE_APP_ID="YOUR_APP_ID"
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5.  Add the following Firestore rules to the "Rules" tab in the Firestore Database section of the Firebase console:
+
+    ```
+    rules_version = '2';
+    service cloud.firestore {
+      match /databases/{database}/documents {
+        match /users/{userId}/{documents=**} {
+          allow read, write: if request.auth != null && request.auth.uid == userId;
+        }
+      }
+    }
+    ```
+
+### Usage
+
+1.  Start the development server:
+
+    ```bash
+    npm run dev
+    ```
+
+2.  Open your browser and navigate to `http://localhost:3000`.
+
+## Built With
+
+*   [Next.js](https://nextjs.org/) - The React framework for production
+*   [Firebase](https://firebase.google.com/) - The platform for building web and mobile applications
+*   [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework
+
+## Contributing
+
+Contributions are welcome! Please read the [contributing guidelines](CONTRIBUTING.md) for more information.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.

@@ -9,21 +9,16 @@ import {
   Coffee,
   BrickWallFire,
 } from "lucide-react";
-
-const mockAuth = {
-  signInWithGoogle: async () => {
-    console.log("Google sign in clicked");
-    await new Promise((resolve) => setTimeout(resolve, 2000));
-  },
-};
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { auth } from "../firebase";
 
 export default function Auth() {
+  const provider = new GoogleAuthProvider();
   const [isLoading, setIsLoading] = useState(false);
 
   const signInWithGoogle = async () => {
     try {
-      setIsLoading(true);
-      await mockAuth.signInWithGoogle();
+      await signInWithPopup(auth, provider);
     } catch (error) {
       console.error("Error signing in with Google: ", error);
     } finally {
